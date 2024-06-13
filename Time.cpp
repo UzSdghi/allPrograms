@@ -1,56 +1,52 @@
 #include <iostream>
-
 using namespace std;
 
 class Time {
 public:
-	int h, m, s;
-	void getTime() {
-		cout << "Enter hour: ";
-		cin >> h;
-		cout << "Enter minute: ";
-		cin >> m;
-		cout << "Enter second: ";
-		cin >> s;
-	}
-	void validTimeFormat() {
-		if ((h <= 23 && h >= 0) && (m <= 59 && m >= 0) && (s <= 59 && s >= 0)) {
-			cout << "valid time entered." << endl;
-		}
-		else {
-			cout << "invalid time entered." << endl;
-		}
-	}
-	void diffrence(int a, int b) {
-		int diff = 0;
-		if (a > b) {
-			diff = a - b;
-		}
-		else {
-			diff = b - a;
-		}
-		int hs = diff / 3600;
-		int ms = (diff % 3600) / 60;
-		int ss = (diff % 3600) % 60;
-		cout << hs << ":" << ms << ":" << ss;
-	}
-	void printTime() {
-		 cout << h << ":" << m << ":" << s;
-	}
-	int convertToss() {
-		return h*3600 + m*60 + s;
-	}
+    int h, m, s;
+
+    int getNum(int min = 0, int max = 59) {
+        int num;
+        do {
+            cin >> num;
+        } while (num < min || num > max);
+        return num;
+    }
+
+    Time() {
+        h = getNum(0, 23);
+        m = getNum();
+        s = getNum();
+    }
+
+    Time(int t) {
+        h = t / 3600;
+        m = (t % 3600) / 60;
+        s = (t % 3600) % 60;
+    }
+
+    int getseconds() {
+        return h * 3600 + m * 60 + s;
+    }
+
+    void print() {
+        cout << h << ":" << m << ":" << s << endl;
+    }
 };
-int main() {
-	Time t1, t2, diff;
-	t1.getTime();
-	t2.getTime();
-	t1.validTimeFormat();
-	t2.validTimeFormat();
-	t1.convertToss();
-	t2.convertToss();
-	diff.diffrence(t1.convertToss(), t2.convertToss());
-	diff.printTime();
-	return 0;
+
+Time diffrent(Time t1, Time t2) {
+    if (t1.getseconds() > t2.getseconds()) {
+        return Time(t1.getseconds() - t2.getseconds());
+    }
+    return Time(t2.getseconds() - t1.getseconds());
 }
 
+int main() {
+    cout << "Enter First clock (h/m/s) :";
+    Time t1;
+    cout << "Enter Second clock (h/m/s) :";
+    Time t2;
+    Time d = diffrent(t1, t2);
+    d.print();
+    return 0;
+}
