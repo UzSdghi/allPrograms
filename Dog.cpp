@@ -1,62 +1,51 @@
 #include <iostream>
 #include <string>
-
+#include <ctime>
 using namespace std;
-
-class dog {
-private:
-	int Age;
-	string name;
-	int score;
+class Dog {
 public:
-	dog(string name, int Age) : name(name), Age(Age), score(0) {}
-	int getyear(int currentyear, int Age)
-	{
-		return currentyear - Age;
-	}
-	void bark()
-	{
-		cout << name << "Says Woof \n";
-	}
-	void learn()
-	{
-		score++;
-	}
-	void showinfo(int currentyear , int Age)
-	{
-		cout << "Name : " << name << '\n';
-		cout << "Age : " << getyear(currentyear, Age) << '\n';
-		cout << "Score : " << score << '\n';
-	}
+    string name;
+    int birthYear;
+    Dog(string n, int bYear) : name(n), birthYear(bYear), score(0) {}
+    int getAge() {
+        time_t t = time(0);
+        struct tm *now = localtime(&t);
+        int currentYear = now->tm_year + 1900;
+        return currentYear - birthYear;
+    }
+    void bark() {
+        cout << name << " says: Bark " << endl;
+    }
+    void learn() {
+        score++;
+    }
+    void showData() {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << getAge() << " years old" << endl;
+        cout << "Score: " << score << endl;
+    }
+private:
+    int score;
 };
-int main()
-{
-	string name;
-	int Age, currentyear;
-	cout << "Enter Name and Age : ";
-	cin >> name >> Age;
-	cout << "enter the current year : ";
-	cin >> currentyear;
-	dog mydog(name, Age);
-	mydog.getyear(currentyear, Age);
-	int command;
-	while (true)
-	{
-		cout << "Choose 1 to bark 2 to teach 0 to show the result : ";
-		cin >> command;
-		if (command == 1)
-		{
-			mydog.bark();
-		}
-		if (command == 2)
-		{
-			mydog.learn();
-		}
-		else if (command == 0)
-		{
-			mydog.showinfo(currentyear , Age);
-			break;
-		}
-	}
-	return 0;
+int main() {
+    string name;
+    int birthYear;
+    int command;
+    cout << "Enter the name : ";
+    getline(cin, name);
+    cout << "Enter the age : ";
+    cin >> birthYear;
+    Dog myDog(name, birthYear);
+    do {
+        cout << "Enter 1 to bark, 2 to learn, 0 show information : ";
+        cin >> command;
+
+        if (command == 1) {
+            myDog.bark();
+        } else if (command == 2) {
+            myDog.learn();
+        }
+    } while (command != 0);
+    myDog.showData();
+    return 0;
 }
